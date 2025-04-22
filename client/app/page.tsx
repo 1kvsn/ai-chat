@@ -1,29 +1,25 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { MessageList } from "./components/MessageList";
+import { ChatInputForm } from "./components/ChatInputForm";
+import { useChat } from "./hooks/useChat";
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("http://localhost:3001/users", {
-        cache: "no-store",
-      });
-      if (!response.ok) {
-        throw new Error("Failed to fetch users");
-      }
-      const data = await response.json();
-      setUsers(data);
-      console.log("Fetched data:", data);
-    };
-    fetchData();
-  }, []);
+  const { messages, input, setInput, isLoading, messagesEndRef, handleSubmit } =
+    useChat();
 
   return (
-    <div className="font-[family-name:var(--font-geist-sans)] p-8">
-      <h1 className="text-2xl font-bold mb-4">Users</h1>
+    <div className="flex flex-col h-screen bg-gray-100">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+        <MessageList messages={messages} messagesEndRef={messagesEndRef} />
+      </div>
+
+      <ChatInputForm
+        onSubmit={handleSubmit}
+        input={input}
+        setInput={setInput}
+        isLoading={isLoading}
+      />
     </div>
   );
 }
