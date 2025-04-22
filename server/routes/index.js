@@ -15,7 +15,7 @@ router.post("/chat", async function (req, res, next) {
     }
 
     const result = streamText({
-      model: openai("gpt-3.5-turbo"),
+      model: openai("gpt-4.1-nano"),
       system: "You are a helpful assistant.",
       prompt,
     });
